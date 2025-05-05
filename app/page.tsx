@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Star from "./components/Star";
 
 export default async function Home() {
@@ -13,21 +14,25 @@ export default async function Home() {
     showsMap.set(show.id, show); // If show.id already exists, it will be overwritten
   });
   const shows = Array.from(showsMap.values());
+  console.log(shows)
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
       {shows.map((show: any) => (
-        <div key={show.id} className="bg-gray-800 text-white p-4 rounded">
-          {show.image?.original && (
-            <Image src={show.image.original} alt={show.name} width={210} height={295} />
-          )}
-          <h2 className="text-xl mt-2">{show.name}</h2>
-          <p className="text-sm flex items-end gap-1">
-            {show.rating?.average && <Star/>} 
-            {show.rating?.average ? show.rating.average.toFixed(1) : 'Rating unavailable'}
-          </p>
-        </div>
+        <Link href={`/series/${show.externals.thetvdb}`}>
+          <div key={show.id} className="bg-gray-800 text-white p-4 rounded">
+            {show.image?.original && (
+              <Image src={show.image.original} alt={show.name} width={210} height={295} />
+            )}
+            <h2 className="text-xl mt-2">{show.name}</h2>
+            <p className="text-sm flex items-end gap-1">
+              {show.rating?.average && <Star/>} 
+              {show.rating?.average ? show.rating.average.toFixed(1) : 'Rating unavailable'}
+            </p>
+          </div>
+        </Link>
       ))}
     </div>
   );
 }
+//.externals.thetvdb
