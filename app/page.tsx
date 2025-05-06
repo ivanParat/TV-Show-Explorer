@@ -19,7 +19,7 @@ export default async function Home() {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
       {shows.map((show: any) => (
-        <Link href={`/series/${show.externals.thetvdb}`}>
+        <Link href={`/show/${show.id}`}>
           <div key={show.id} className="bg-gray-800 text-white p-4 rounded">
             {show.image?.original && (
               <Image src={show.image.original} alt={show.name} width={210} height={295} />
