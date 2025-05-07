@@ -30,6 +30,9 @@ export default async function ShowPage({params}:{params:{showId: string;}}){
       <Link href={`/show/${showId}/season`}>
         <button className="cursor-pointer">View Episodes</button>
       </Link>
+      <Link href={`/show/${showId}/cast`}>
+        <button className="cursor-pointer">View Cast</button>
+      </Link>
     </div>
   );
 }
