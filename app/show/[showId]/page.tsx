@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Star from "@/app/components/Star";
 import SanitizedHTML from "@/app/components/SanitizedHTML";
+import FavoriteButton from "@/app/components/FavoriteButton";
 
 export default async function ShowPage({params}:{params:{showId: string;}}){
   const { showId } = await params;
@@ -33,6 +34,7 @@ export default async function ShowPage({params}:{params:{showId: string;}}){
       <Link href={`/show/${showId}/cast`}>
         <button className="cursor-pointer">View Cast</button>
       </Link>
+      <FavoriteButton featureId={show.id} type={'shows'}/>
     </div>
   );
 }

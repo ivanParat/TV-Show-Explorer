@@ -1,4 +1,5 @@
 import Link from "next/link";
+import FavoriteButton from "@/app/components/FavoriteButton";
 
 export default async function CastPage({params}:{params:{showId: string;}}){
   const { showId } = await params;
@@ -22,6 +23,7 @@ export default async function CastPage({params}:{params:{showId: string;}}){
                 <Link href={`/person/${castMember.person.id}`} className="cursor-pointer">
                   {castMember.person.name}
                 </Link>
+                <FavoriteButton featureId={castMember.person.id} type="people"/>
               </td>
               <td>
                 {castMember.character.name}
