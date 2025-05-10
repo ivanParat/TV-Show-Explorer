@@ -9,7 +9,7 @@ function SearchBar(){
   const searchParams = useSearchParams();
   const [input, setInput] = useState(searchParams.get("q") || "");
   const handleSearch = () => {
-    router.push(input ? `/?q=${encodeURIComponent(input)}` : "/");
+    router.push(input ? `/search?q=${encodeURIComponent(input)}` : "/");
   };
 
   useEffect(() => {
