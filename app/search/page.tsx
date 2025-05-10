@@ -1,6 +1,6 @@
 // app/search/page.tsx
 import { notFound } from "next/navigation";
-import Shows from "../components/Shows";
+import ShowList from "../components/ShowList";
 
 export default async function SearchPage({ searchParams }: { searchParams: { q?: string } }) {
   const query = await searchParams.q;
@@ -18,7 +18,7 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
   return (
     <div className="p-6">
       <h1 className="text-2xl mb-4 text-white">Results for "{query}"</h1>
-      <Shows shows={shows} />
+      <ShowList initialShows={shows} infiniteScroll={false} initialDate=""/>
     </div>
   );
 }
