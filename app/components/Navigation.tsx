@@ -9,7 +9,8 @@ function SearchBar(){
   const searchParams = useSearchParams();
   const [input, setInput] = useState(searchParams.get("q") || "");
   const handleSearch = () => {
-    router.push(input ? `/search?q=${encodeURIComponent(input)}` : "/");
+    if (!input.trim()) return; // Do nothing if input is empty or just spaces
+    router.push(`/search?q=${encodeURIComponent(input)}`);
   };
 
   useEffect(() => {
