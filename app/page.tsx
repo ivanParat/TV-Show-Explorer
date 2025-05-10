@@ -15,6 +15,12 @@ export default async function Home() {
     showsMap.set(show.id, show); // If show.id already exists, it will be overwritten
   });
   const shows = Array.from(showsMap.values());
+  shows.sort((a, b) => {
+    //ako postoji rating, vrijednost će biti rating, a inače će biti 0
+    const ratingA = a.rating?.average ?? 0;
+    const ratingB = b.rating?.average ?? 0;
+    return ratingB - ratingA; // Descending order
+  });  
   console.log(shows)
 
   return (
