@@ -4,23 +4,36 @@ import ShowCard from "./ShowCard";
 import { useState, useEffect } from "react";
 import { useInView } from 'react-intersection-observer'
 import { sortShowsByRating } from "../lib/shows";
+import GenreCheckbox from "./GenreCheckbox";
 
 export default function ShowList({initialShows, infiniteScroll, initialDate}: {initialShows: any, infiniteScroll: boolean, initialDate: string}) {
 
-  //ako infinite scroll nije potreban (kod search), ovo je sve što treba
+  //ako infinite scroll nije potreban (nije potreban kod search), ovo je sve što treba
+
+  const [shows, setShows] = useState<any[]>(initialShows);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+
+  const filteredShows = selectedGenres.length === 0
+  ? shows
+  : shows.filter(show =>
+      show.genres?.some((genre: string) => selectedGenres.includes(genre))
+    );
+
   if(!infiniteScroll){
     return(
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
-      {initialShows.map((show: any) => (
-        <ShowCard key={show.id} show={show}/>
-      ))}
+      <div>
+        <GenreCheckbox selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres}/>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
+        {filteredShows.map((show: any) => (
+          <ShowCard key={show.id} show={show}/>
+        ))}
+        </div>
       </div>
     );
   }
 
-  //ako je potreban infinite scroll (kod home page), potrebno je i ovo ispod
+  //ako je potreban infinite scroll (potreban je kod home page), potrebno je i ovo ispod
 
-  const [shows, setShows] = useState<any[]>(initialShows);
   const [currentDate, setCurrentDate] = useState<string>(initialDate);
   const { ref, inView } = useInView()
 
@@ -54,15 +67,18 @@ export default function ShowList({initialShows, infiniteScroll, initialDate}: {i
     if (inView) {
       loadMoreShows()
     }
-  }, [inView])
+  }, [inView, currentDate]) //poziva se kada se dovoljno spustimo(inView), i ako smo već jednom učitali nove podatke, ali ih nije bilo dovoljno da ref nestane iz vidnog polja(currentDate)
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
-      {shows.map((show: any) => (
-        <ShowCard key={show.id} show={show}/>
-      ))}
-      <div ref={ref}>
-        Loading...
+    <div>
+      <GenreCheckbox selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres}/>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
+        {filteredShows.map((show: any) => (
+          <ShowCard key={show.id} show={show}/>
+        ))}
+        <div ref={ref}>
+          Loading...
+        </div>
       </div>
     </div>
   );
