@@ -3,10 +3,14 @@ import Link from "next/link";
 import Star from "@/app/components/Star";
 import SanitizedHTML from "@/app/components/SanitizedHTML";
 import FavoriteButton from "@/app/components/FavoriteButton";
+import NotFound from "@/app/not-found";
 
 export default async function ShowPage({params}:{params:{showId: string;}}){
   const { showId } = await params;
   const res = await fetch(`https://api.tvmaze.com/shows/${showId}`, { next: { revalidate: 3600 } });
+  if (!res.ok){
+    return <NotFound/>;
+  }
   const show = await res.json();
   console.log(show);
 

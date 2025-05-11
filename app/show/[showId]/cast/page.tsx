@@ -1,9 +1,13 @@
 import Link from "next/link";
 import FavoriteButton from "@/app/components/FavoriteButton";
+import NotFound from "@/app/not-found";
 
 export default async function CastPage({params}:{params:{showId: string;}}){
   const { showId } = await params;
   const res = await fetch(`https://api.tvmaze.com/shows/${showId}/cast`, { next: { revalidate: 3600 } });
+  if (!res.ok){
+    return <NotFound/>;
+  }
   const cast = await res.json();
   console.log(cast);
 

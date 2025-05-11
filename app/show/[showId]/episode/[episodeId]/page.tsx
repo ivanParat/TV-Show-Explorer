@@ -2,10 +2,14 @@ import Image from "next/image";
 import Star from "@/app/components/Star";
 import SanitizedHTML from "@/app/components/SanitizedHTML";
 import FavoriteButton from "@/app/components/FavoriteButton";
+import NotFound from "@/app/not-found";
 
 export default async function SeasonPage({params}:{params:{showId: string; episodeId: string}}){
   const { showId, episodeId } = await params;
   const res = await fetch(`https://api.tvmaze.com/episodes/${episodeId}`, { next: { revalidate: 3600 } });
+  if (!res.ok){
+    return <NotFound/>;
+  }
   const episode = await res.json();
   console.log(episode);
   return(

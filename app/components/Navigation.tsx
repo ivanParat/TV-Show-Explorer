@@ -85,6 +85,12 @@ export function Navigation() {
       </div>
       <ul className="flex justify-center items-center">
         <Link 
+          href={"/"}
+          className="font-bold hover:text-brand active:text-brand px-5 py-1 md:px-1 lg:px-3 xl:px-5"
+        >
+          Home
+        </Link>
+        <Link 
           href={"/favorites"}
           className="font-bold hover:text-brand active:text-brand px-5 py-1 md:px-1 lg:px-3 xl:px-5"
         >

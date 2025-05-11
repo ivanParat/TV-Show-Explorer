@@ -1,10 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import FavoriteButton from "@/app/components/FavoriteButton";
+import NotFound from "@/app/not-found";
 
 export default async function PersonPage({params}:{params:{personId: string;}}){
   const { personId } = await params;
   const res = await fetch(`https://api.tvmaze.com/people/${personId}?embed=castcredits`, { next: { revalidate: 3600 } });
+  if (!res.ok){
+    return <NotFound/>;
+  }
   const person = await res.json();
   console.log(person);
 
