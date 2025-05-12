@@ -1,9 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import Star from "@/app/components/Star";
-import SanitizedHTML from "@/app/components/SanitizedHTML";
 import FavoriteButton from "@/app/components/FavoriteButton";
 import NotFound from "@/app/not-found";
+
+export async function generateMetadata({params}:{params:{showId: string;}}){
+  const { showId } = await params;
+  const res = await fetch(`https://api.tvmaze.com/shows/${showId}`, { next: { revalidate: 3600 } });
+  if (!res.ok) return { title: "Show does not exist" };
+  const show = await res.json();
+  const image = show.image?.original || "/fallback-image.png";
+  const summaryText = show.summary?.replace(/<[^>]+>/g, "") || "No summary available";
+  return {
+    title: `TV Show Explorer | ${show.name}`,
+    description: `${show.name} - ${summaryText}`,
+    keywords: ["TV", "Show", "Television", "Series", "Season", "Episode", "Cast", "Actor", "Character"],
+    openGraph: {
+      images: [{ url: image, width: 210, height: 295 }],
+    },
+  };
+}
 
 export default async function ShowPage({params}:{params:{showId: string;}}){
   const { showId } = await params;
@@ -31,7 +47,7 @@ export default async function ShowPage({params}:{params:{showId: string;}}){
       {show.ended && <p>Ended: {show.ended}</p>}
       {show.status && <p>Status: {show.status}</p>}
       {show.averageRuntime && <p>Average Runtime: {show.averageRuntime} min</p>}
-      {show.summary && <SanitizedHTML html={show.summary} />}
+      {show.summary && show.summary?.replace(/<[^>]+>/g, "")}
       <Link href={`/show/${showId}/season`}>
         <button className="cursor-pointer">View Episodes</button>
       </Link>

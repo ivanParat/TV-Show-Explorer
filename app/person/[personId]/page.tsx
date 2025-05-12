@@ -3,6 +3,22 @@ import Link from "next/link";
 import FavoriteButton from "@/app/components/FavoriteButton";
 import NotFound from "@/app/not-found";
 
+export async function generateMetadata({params}:{params:{personId: string;}}){
+  const { personId } = await params;
+  const res = await fetch(`https://api.tvmaze.com/people/${personId}?embed=castcredits`, { next: { revalidate: 3600 } });
+  if (!res.ok) return { title: "Person does not exist" };
+  const person = await res.json();
+  const image = person.image?.original || "/fallback-image.png";
+  return {
+    title: `TV Show Explorer | ${person.name}`,
+    description: "See personal info about an actor, as well as all their roles",
+    keywords: ["TV", "Show", "Television", "Series", "Season", "Episode", "Cast", "Actor", "Character"],
+    openGraph: {
+      images: [{ url: image, width: 210, height: 295 }],
+    },
+  };
+}
+
 export default async function PersonPage({params}:{params:{personId: string;}}){
   const { personId } = await params;
   const res = await fetch(`https://api.tvmaze.com/people/${personId}?embed=castcredits`, { next: { revalidate: 3600 } });
