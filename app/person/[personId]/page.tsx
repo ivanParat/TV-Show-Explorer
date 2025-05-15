@@ -59,7 +59,7 @@ export default async function PersonPage({params}:{params:{personId: string;}}){
                           <Link href={`/show/${credit._links.show.href.split("/").pop()}`}>
                             {credit._links.show.name}
                           </Link>
-                          <FavoriteButton featureId={credit._links.show.href.split("/").pop()} type="shows"/>
+                          <FavoriteButton featureId={Number(credit._links.show.href.split("/").pop())} type="shows"/>
                         </div>
                       }
                     </td>
