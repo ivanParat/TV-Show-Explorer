@@ -3,6 +3,15 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from 'next-auth/react';
+import { signIn, signOut } from "next-auth/react";
+
+const SignInButton = () => {
+  return <button onClick={() => signIn('github')}> Sign In</button>;
+};
+const SignOutButton = () => {
+  return <button onClick={() => signOut()}> Sign Out</button>;
+};
 
 function SearchBar(){
   const router = useRouter();
@@ -77,6 +86,8 @@ function SearchBar(){
 }
 
 export function Navigation() {
+  const session = useSession();
+  console.log(session)
 
   return (
     <nav className="flex h-14 items-center justify-between px-2 md:px-4 lg:px-8 xl:px-12">
@@ -105,6 +116,8 @@ export function Navigation() {
             Log in
           </button>
         </Link>
+        {session?.status == "loading" ? <p>Loading...</p> : session?.status == "authenticated" ? <SignOutButton/> : <SignInButton/>}
+
       </ul>
     </nav>
   );
