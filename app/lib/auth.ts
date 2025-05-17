@@ -1,11 +1,13 @@
-"use server";
+import { signOut } from "next-auth/react";
 
-import { signIn, signOut } from "@/app/auth";
+export async function syncAndSignOut(userId: string) {
+  await fetch("/api/logout-sync-favorites", {
+    method: "POST",
+    body: JSON.stringify({ userId }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-export const login = async () => {
-  await signIn("github", { redirectTo: "/" });
-};
-
-export const logout = async () => {
-  await signOut({ redirectTo: "/" });
-};
+  await signOut(); 
+}

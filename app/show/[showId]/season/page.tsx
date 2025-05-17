@@ -33,7 +33,6 @@ export default async function SeasonPage({params}:{params:{showId: string;}}){
     return <NotFound/>;
   }
   const seasons = await resSeasons.json();
-  console.log(seasons);
 
   const firstSeason = seasons[0];
   const resFirstSeasonEpisodes = await fetch(`https://api.tvmaze.com/seasons/${firstSeason.id}/episodes`, { next: { revalidate: 3600 } });
@@ -41,7 +40,6 @@ export default async function SeasonPage({params}:{params:{showId: string;}}){
     return <NotFound/>;
   }
   const episodes = await resFirstSeasonEpisodes.json();
-  console.log(episodes)
 
   return(
     <div>

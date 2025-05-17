@@ -105,3 +105,12 @@ export const favorites = pgTable("favorites", {
   featureId: integer("feature_id").notNull(),
   type: text("type").notNull(), 
 });
+
+export const schema = {
+  users,
+  accounts,
+  sessions,
+  verificationTokens,
+  authenticators,
+  favorites,
+};

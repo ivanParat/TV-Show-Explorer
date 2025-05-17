@@ -1,6 +1,5 @@
 import ShowList from "./components/ShowList";
-import { getUniqueShowsFromSchedule } from "./lib/shows";
-import { sortShowsByRating } from "./lib/shows";
+import { getUniqueShowsFromSchedule, sortShowsByRating } from "./lib/shows";
 
 export default async function Home() {
   const today = new Date().toISOString().split("T")[0];
@@ -9,8 +8,6 @@ export default async function Home() {
 
   const initialShows = getUniqueShowsFromSchedule(schedule);
   const sortedInitialShows = sortShowsByRating(initialShows);
-
-  console.log(sortedInitialShows)
 
   return (
     <ShowList initialShows={sortedInitialShows} infiniteScroll={true} initialDate={today}/>

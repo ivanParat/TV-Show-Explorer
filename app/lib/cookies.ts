@@ -18,3 +18,10 @@ export async function setFavorites(type: string, favorites: number[]) {
     maxAge: 60 * 60 * 24 * 30, // 30 days
   });
 }
+
+export async function clearCookies() {
+  const types = ["shows", "episodes", "people"];
+  for (const type of types) {
+    await setFavorites(type, []);
+  }
+}

@@ -26,7 +26,6 @@ export default async function PersonPage({params}:{params:{personId: string;}}){
     return <NotFound/>;
   }
   const person = await res.json();
-  console.log(person);
 
   return(
     <div>

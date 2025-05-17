@@ -29,7 +29,6 @@ export default async function CastPage({params}:{params:{showId: string;}}){
     return <NotFound/>;
   }
   const cast = await res.json();
-  console.log(cast);
 
   return(
     <div>

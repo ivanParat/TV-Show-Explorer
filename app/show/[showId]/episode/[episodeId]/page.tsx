@@ -34,7 +34,6 @@ export default async function SeasonPage({params}:{params:{showId: string; episo
     return <NotFound/>;
   }
   const episode = await res.json();
-  console.log(episode);
   return(
     <div>
       {episode.image?.original &&  <Image src={episode.image.original} alt={episode.name} width={300} height={300} priority={true}/>}

@@ -4,14 +4,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from 'next-auth/react';
-import { signIn, signOut } from "next-auth/react";
-
-const SignInButton = () => {
-  return <button onClick={() => signIn('github')}> Sign In</button>;
-};
-const SignOutButton = () => {
-  return <button onClick={() => signOut()}> Sign Out</button>;
-};
+import SignInButton from "./SignInButton";
+import SignOutButton from "./SignOutButton";
 
 function SearchBar(){
   const router = useRouter();
@@ -116,7 +110,7 @@ export function Navigation() {
             Log in
           </button>
         </Link>
-        {session?.status == "loading" ? <p>Loading...</p> : session?.status == "authenticated" ? <SignOutButton/> : <SignInButton/>}
+        {session?.status == "loading" ? <p>Loading...</p> : session?.status == "authenticated" ? <SignOutButton userId={session.data.user?.id!}/> : <SignInButton/>}
 
       </ul>
     </nav>

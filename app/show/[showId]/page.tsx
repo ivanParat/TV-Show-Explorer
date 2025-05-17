@@ -28,7 +28,6 @@ export default async function ShowPage({params}:{params:{showId: string;}}){
     return <NotFound/>;
   }
   const show = await res.json();
-  console.log(show);
 
   return (
     <div className="bg-gray-800 text-white p-4 rounded">
