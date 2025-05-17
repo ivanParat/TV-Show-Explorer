@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sendCookieDataToDB } from "@/app/lib/favorites";
+import { sendCookieDataToDB } from "@/app/lib/cookies-db-sync";
 import { clearCookies } from "@/app/lib/cookies";
 
 export async function POST(req: Request) {
