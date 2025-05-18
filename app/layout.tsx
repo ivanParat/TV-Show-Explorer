@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "./components/Navigation";
 import { SessionProvider } from "next-auth/react";
+import FavoriteSyncTracker from "./components/FavoriteSyncTracker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
       <SessionProvider>
+        <FavoriteSyncTracker/>
         <Navigation/>
         {children}
       </SessionProvider>

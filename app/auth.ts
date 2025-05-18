@@ -8,11 +8,15 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db),
   providers: [GitHub],
   callbacks: {
-    async session({ session, user }) {
+    async signIn({ user }) {
       if (user.id) {
-        await populateCookiesWithFavoritesFromDB(user.id); 
+        await populateCookiesWithFavoritesFromDB(user.id);
       }
-      return session;
+      return true; 
+    },
+
+    async session({ session }) {
+      return session; 
     },
   },
 });

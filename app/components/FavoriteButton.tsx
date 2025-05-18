@@ -9,7 +9,7 @@ export default function FavoriteButton({ featureId, type, initialSaved }:{featur
   const { status } = useSession();
 
   useEffect(() => {
-    if (initialSaved != undefined) return; 
+    if (initialSaved != undefined || status !== "authenticated") return; 
     async function fetchSavedStatus() {
       const res = await fetch(`/api/favorites/${type}`, { cache: "no-store" });
       const data = await res.json();
@@ -17,6 +17,8 @@ export default function FavoriteButton({ featureId, type, initialSaved }:{featur
     }
     fetchSavedStatus();
   }, [status]);
+
+  if(status !== "authenticated") return null;
 
   function toggleFavorite() {
     startTransition(async () => {

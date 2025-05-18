@@ -1,4 +1,4 @@
-import { getFavorites as getCookieFavorites, setFavorites as setCookieFavorites, clearCookies } from "./cookies";
+import { getFavorites as getCookieFavorites, setFavorites as setCookieFavorites } from "./cookies";
 import { db } from "@/app/db";
 import { favorites } from "@/app/db/schema";
 import { eq, and, or } from "drizzle-orm";
@@ -6,8 +6,6 @@ import { eq, and, or } from "drizzle-orm";
 const types = ["shows", "episodes", "people"];
 
 export async function populateCookiesWithFavoritesFromDB(userId: string) {
-  await clearCookies();
-
   const dbFavorites = await db.query.favorites.findMany({
     where: (favs, { eq }) => eq(favs.userId, userId),
     columns: {
