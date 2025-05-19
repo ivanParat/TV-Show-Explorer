@@ -1,17 +1,19 @@
 "use client";
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition, useEffect, useContext } from "react";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { useSession } from "next-auth/react";
+import { FavoritesContext } from "../context/FavoritesContext";
  
 export default function FavoriteButton({ featureId, type, initialSaved }:{featureId:number, type:string, initialSaved?:boolean}) {
   const [saved, setSaved] = useState(initialSaved);   
   const [isPending, startTransition] = useTransition();
   const { status } = useSession();
+  const setFavorites = useContext(FavoritesContext);
 
   useEffect(() => {
     if (initialSaved != undefined || status !== "authenticated") return; 
     async function fetchSavedStatus() {
-      const res = await fetch(`/api/favorites/${type}`, { cache: "no-store" });
+      const res = await fetch(`/api/favorites/${type}`);
       const data = await res.json();
       setSaved(data.favorites.includes(featureId));
     }
@@ -28,7 +30,15 @@ export default function FavoriteButton({ featureId, type, initialSaved }:{featur
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ featureId }),
       });
-      if (res.ok) setSaved(!saved);
+  
+      if (res.ok) {
+        setSaved(!saved);
+        if (method === "DELETE"){
+          setFavorites?.((prevFavorites) => {
+              return prevFavorites.filter((favorite) => favorite.id !== featureId);
+          });
+        }
+      }
     });
   }
  

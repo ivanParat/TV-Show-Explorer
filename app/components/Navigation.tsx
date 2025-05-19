@@ -95,12 +95,15 @@ export function Navigation() {
         >
           Home
         </Link>
-        <Link 
-          href={"/favorites"}
+        {
+          session?.status == "authenticated" &&
+          <Link 
+          href={"/favorites/shows"}
           className="font-bold hover:text-brand active:text-brand px-5 py-1 md:px-1 lg:px-3 xl:px-5"
         >
           Favorites
         </Link>
+        }
 
         <Link
           href={"/login"}
