@@ -79,7 +79,7 @@ export default function FavoriteSyncTracker() {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       clearInterval(interval);
     };
-  }, [session.status]);
+  }, [session.status, session.data?.user?.id]);
 
   return null;
 }

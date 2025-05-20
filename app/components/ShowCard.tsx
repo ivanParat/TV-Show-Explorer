@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import Star from "./Star";
 import FavoriteButton from "./FavoriteButton";
+import { Show } from "../types/types";
 
-export default function ShowCard({show}: {show: any}) {
+export default function ShowCard({show}: {show: Show}) {
   return(
     <div>
       <Link href={`/show/${show.id}`}>

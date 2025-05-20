@@ -2,7 +2,7 @@ import SeasonNavigation from "./components/SeasonNavigation";
 import EpisodeList from "./components/EpisodeList";
 import NotFound from "@/app/not-found";
 
-export async function generateMetadata({params}:{params:{showId: string;}}){
+export async function generateMetadata({params}:{params:Promise<{showId: string;}>}){
   const { showId } = await params;
 
   const res = await fetch(`https://api.tvmaze.com/shows/${showId}`, { next: { revalidate: 3600 } });
@@ -26,7 +26,7 @@ export async function generateMetadata({params}:{params:{showId: string;}}){
   };
 }
 
-export default async function SeasonPage({params}:{params:{showId: string;}}){
+export default async function SeasonPage({params}:{params:Promise<{showId: string;}>}){
   const { showId } = await params;
   const resSeasons = await fetch(`https://api.tvmaze.com/shows/${showId}/seasons`, { next: { revalidate: 3600 } });
   if (!resSeasons.ok){

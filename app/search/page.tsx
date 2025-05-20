@@ -7,12 +7,13 @@ import { useEffect, useState } from "react";
 import ShowList from "../components/ShowList";
 import NotFound from "../not-found";
 import Loading from "../loading";
+import { Show } from "../types/types";
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
   const query = searchParams.get("q");
 
-  const [shows, setShows] = useState<any[]>([]);
+  const [shows, setShows] = useState<Show[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -29,7 +30,7 @@ export default function SearchPage() {
         const res = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`);
         if (!res.ok) throw new Error("Failed to fetch");
         const results = await res.json();
-        const shows = results.map((result: any) => result.show);
+        const shows = results.map((result: {score: number, show: Show}) => result.show);
         setShows(shows);
       } catch (err) {
         console.error(err);
@@ -48,7 +49,7 @@ export default function SearchPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl mb-4 text-white">Results for "{query}"</h1>
+      <h1 className="text-2xl mb-4 text-white">Results for &quot;{query}&quot;</h1>
       <ShowList initialShows={shows} infiniteScroll={false} initialDate="" />
     </div>
   );

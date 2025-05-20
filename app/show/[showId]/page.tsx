@@ -4,7 +4,7 @@ import Star from "@/app/components/Star";
 import FavoriteButton from "@/app/components/FavoriteButton";
 import NotFound from "@/app/not-found";
 
-export async function generateMetadata({params}:{params:{showId: string;}}){
+export async function generateMetadata({params}:{params:Promise<{showId: string;}>}){
   const { showId } = await params;
   const res = await fetch(`https://api.tvmaze.com/shows/${showId}`, { next: { revalidate: 3600 } });
   if (!res.ok) return { title: "Show does not exist" };
@@ -21,7 +21,7 @@ export async function generateMetadata({params}:{params:{showId: string;}}){
   };
 }
 
-export default async function ShowPage({params}:{params:{showId: string;}}){
+export default async function ShowPage({params}:{params:Promise<{showId: string;}>}){
   const { showId } = await params;
   const res = await fetch(`https://api.tvmaze.com/shows/${showId}`, { next: { revalidate: 3600 } });
   if (!res.ok){

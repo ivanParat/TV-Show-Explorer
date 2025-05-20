@@ -1,9 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 import Star from "@/app/components/Star";
 import FavoriteButton from "@/app/components/FavoriteButton";
 import NotFound from "@/app/not-found";
 
-export async function generateMetadata({params}:{params:{showId: string; episodeId: string}}){
+export async function generateMetadata({params}:{params:Promise<{showId: string; episodeId: string}>}){
   const { showId, episodeId } = await params;
 
   const res = await fetch(`https://api.tvmaze.com/shows/${showId}`, { next: { revalidate: 3600 } });
@@ -27,7 +28,7 @@ export async function generateMetadata({params}:{params:{showId: string; episode
   };
 }
 
-export default async function SeasonPage({params}:{params:{showId: string; episodeId: string}}){
+export default async function SeasonPage({params}:{params:Promise<{showId: string; episodeId: string}>}){
   const { showId, episodeId } = await params;
   const res = await fetch(`https://api.tvmaze.com/episodes/${episodeId}`, { next: { revalidate: 3600 } });
   if (!res.ok){
@@ -38,6 +39,7 @@ export default async function SeasonPage({params}:{params:{showId: string; episo
     <div>
       {episode.image?.original &&  <Image src={episode.image.original} alt={episode.name} width={300} height={300} priority={true}/>}
       <p>S{episode.season} E{episode.number} - {episode.name}</p>
+      {episode._links?.show?.name && <Link href={`/show/${showId}`}>Show: {episode._links.show.name}</Link>}
       <p className="text-sm flex items-end gap-1">
         {episode.rating?.average && <Star/>} 
         {episode.rating?.average ? episode.rating.average.toFixed(1) : 'Rating unavailable'}

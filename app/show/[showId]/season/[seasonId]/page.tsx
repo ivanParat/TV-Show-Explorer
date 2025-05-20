@@ -1,8 +1,9 @@
 import SeasonNavigation from "../components/SeasonNavigation";
 import EpisodeList from "../components/EpisodeList";
 import NotFound from "@/app/not-found";
+import { Season } from "@/app/types/types";
 
-export async function generateMetadata({params}:{params:{showId: string; seasonId: string}}){
+export async function generateMetadata({params}:{params:Promise<{showId: string; seasonId: string}>}){
   const { showId, seasonId } = await params;
 
   const res = await fetch(`https://api.tvmaze.com/shows/${showId}`, { next: { revalidate: 3600 } });
@@ -13,7 +14,7 @@ export async function generateMetadata({params}:{params:{showId: string; seasonI
   if (!resSeasons.ok) return { title: "Seasons do not exist" };
   const seasons = await resSeasons.json();
 
-  const season = seasons.find((s: any) => s.id === Number(seasonId));
+  const season = seasons.find((s: Season) => s.id === Number(seasonId));
   const seasonNumber = season?.number ?? "Unknown";
 
   const image = show.image?.original || "/fallback-image.png";
@@ -29,7 +30,7 @@ export async function generateMetadata({params}:{params:{showId: string; seasonI
   };
 }
 
-export default async function SeasonPage({params}:{params:{showId: string; seasonId: string}}){
+export default async function SeasonPage({params}:{params:Promise<{showId: string; seasonId: string}>}){
   const { showId, seasonId } = await params;
   const resSeasons = await fetch(`https://api.tvmaze.com/shows/${showId}/seasons`, { next: { revalidate: 3600 } });
   if (!resSeasons.ok){

@@ -2,20 +2,21 @@
 
 import { useEffect, useState } from "react";
 import FavoritesNavigation from "../components/FavoritesNavigation";
-import FavoritesList from "@/app/components/FavoritesList";
+import FavoritePeopleList from "../components/FavoritePeopleList";
 import { FavoritesContext } from "@/app/context/FavoritesContext";
+import { Person } from "@/app/types/types";
 
 const type = "people";
 
 export default function FavoritePeoplePage() {
-  const [favorites, setFavorites] = useState<any[]>([]);
+  const [favorites, setFavorites] = useState<Person[]>([]);
 
   useEffect(() => {
     async function fetchFavorites() {
       const res = await fetch(`/api/favorites/${type}`);
       const data = await res.json();
       const favoritesIds = data.favorites;
-      let favs = [];
+      const favs = [];
       for (const id of favoritesIds) {
         const resTVMaze = await fetch(`https://api.tvmaze.com/${type}/${id}`);
         const favorite = await resTVMaze.json();
@@ -30,7 +31,7 @@ export default function FavoritePeoplePage() {
     <div>
       <FavoritesNavigation />
       <FavoritesContext.Provider value={setFavorites}>
-        <FavoritesList favorites={favorites} type={type} />
+        <FavoritePeopleList favorites={favorites}/>
       </FavoritesContext.Provider>
     </div>
   );

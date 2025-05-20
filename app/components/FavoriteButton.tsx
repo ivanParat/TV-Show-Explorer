@@ -18,7 +18,7 @@ export default function FavoriteButton({ featureId, type, initialSaved }:{featur
       setSaved(data.favorites.includes(featureId));
     }
     fetchSavedStatus();
-  }, [status]);
+  }, [status, featureId, initialSaved, type]);
 
   if(status !== "authenticated") return null;
 

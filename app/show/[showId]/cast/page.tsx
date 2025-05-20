@@ -1,8 +1,9 @@
 import Link from "next/link";
 import FavoriteButton from "@/app/components/FavoriteButton";
 import NotFound from "@/app/not-found";
+import { CastMember } from "@/app/types/types";
 
-export async function generateMetadata({params}:{params:{showId: string;}}){
+export async function generateMetadata({params}:{params:Promise<{showId: string;}>}){
   const { showId } = await params;
 
   const res = await fetch(`https://api.tvmaze.com/shows/${showId}`, { next: { revalidate: 3600 } });
@@ -22,7 +23,7 @@ export async function generateMetadata({params}:{params:{showId: string;}}){
   };
 }
 
-export default async function CastPage({params}:{params:{showId: string;}}){
+export default async function CastPage({params}:{params:Promise<{showId: string;}>}){
   const { showId } = await params;
   const res = await fetch(`https://api.tvmaze.com/shows/${showId}/cast`, { next: { revalidate: 3600 } });
   if (!res.ok){
@@ -40,7 +41,7 @@ export default async function CastPage({params}:{params:{showId: string;}}){
           </tr>
         </thead>
         <tbody>
-          {cast.map((castMember: any, index: number) => (
+          {cast.map((castMember: CastMember, index: number) => (
             <tr key={index}>
               <td>
                 <Link href={`/person/${castMember.person.id}`} className="cursor-pointer">

@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   if (!body?.featureId)
     return Response.json({ error: "feature id missing" }, { status: 400 });
 
-  let favorites = await getFavorites(type);
+  const favorites = await getFavorites(type);
   if (!favorites.includes(body.featureId)) {
     favorites.push(body.featureId);
     await setFavorites(type, favorites);

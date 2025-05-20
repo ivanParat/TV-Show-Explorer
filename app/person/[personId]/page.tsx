@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import FavoriteButton from "@/app/components/FavoriteButton";
 import NotFound from "@/app/not-found";
+import { CastCredit } from "@/app/types/types";
 
-export async function generateMetadata({params}:{params:{personId: string;}}){
+export async function generateMetadata({params}:{params: Promise<{personId: string;}>}){
   const { personId } = await params;
   const res = await fetch(`https://api.tvmaze.com/people/${personId}?embed=castcredits`, { next: { revalidate: 3600 } });
   if (!res.ok) return { title: "Person does not exist" };
@@ -19,7 +20,7 @@ export async function generateMetadata({params}:{params:{personId: string;}}){
   };
 }
 
-export default async function PersonPage({params}:{params:{personId: string;}}){
+export default async function PersonPage({params}: {params: Promise<{personId: string;}>}){
   const { personId } = await params;
   const res = await fetch(`https://api.tvmaze.com/people/${personId}?embed=castcredits`, { next: { revalidate: 3600 } });
   if (!res.ok){
@@ -49,7 +50,7 @@ export default async function PersonPage({params}:{params:{personId: string;}}){
                 </tr>
               </thead>
               <tbody>
-                {person._embedded.castcredits.map((credit:any, index: number) => (
+                {person._embedded.castcredits.map((credit: CastCredit, index: number) => (
                   <tr key={index}>
                     <td>
                       {

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from 'next-auth/react';
 import SignInButton from "./SignInButton";
 import SignOutButton from "./SignOutButton";
+import { Suspense } from 'react'
 
 function SearchBar(){
   const router = useRouter();
@@ -81,12 +82,13 @@ function SearchBar(){
 
 export function Navigation() {
   const session = useSession();
-  console.log(session)
 
   return (
     <nav className="flex h-14 items-center justify-between px-2 md:px-4 lg:px-8 xl:px-12">
       <div>
-        <SearchBar/>
+        <Suspense>
+          <SearchBar/>
+        </Suspense>
       </div>
       <ul className="flex justify-center items-center">
         <Link 
@@ -113,7 +115,7 @@ export function Navigation() {
             Log in
           </button>
         </Link>
-        {session?.status == "loading" ? <p>Loading...</p> : session?.status == "authenticated" ? <SignOutButton userId={session.data.user?.id!}/> : <SignInButton/>}
+        {session?.status == "loading" ? <p>Loading...</p> : session?.status == "authenticated" && session.data?.user?.id ? <SignOutButton userId={session.data.user.id}/> : <SignInButton/>}
 
       </ul>
     </nav>
