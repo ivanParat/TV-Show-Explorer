@@ -6,6 +6,7 @@ import { useInView } from 'react-intersection-observer'
 import { sortShowsByRating } from "../lib/shows";
 import GenreSelectDropdown from "./GenreSelectDropdown";
 import { Show } from "../types/types";
+import Grid from "./layout/Grid";
 
 export default function ShowList({initialShows, infiniteScroll, initialDate}: {initialShows: Show[], infiniteScroll: boolean, initialDate: string}) {
 
@@ -34,11 +35,11 @@ export default function ShowList({initialShows, infiniteScroll, initialDate}: {i
     return(
       <main className="flex flex-col">
         <GenreSelectDropdown selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres}/>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
+        <Grid>
         {filteredShows.map((show: Show) => (
           <ShowCard key={show.id} show={show}/>
         ))}
-        </div>
+        </Grid>
       </main>
     );
   }
@@ -74,14 +75,14 @@ export default function ShowList({initialShows, infiniteScroll, initialDate}: {i
   return (
     <main className="flex flex-col">
       <GenreSelectDropdown selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres}/>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
+      <Grid>
         {filteredShows.map((show: Show) => (
           <ShowCard key={show.id} show={show}/>
         ))}
         <div ref={ref}>
           Loading...
         </div>
-      </div>
+      </Grid>
     </main>
   );
 }

@@ -13,8 +13,8 @@ export default function FavoriteEpisodesList({favorites}: {favorites: Episode[]}
           <p>S{episode.season} E{episode.number} - {episode.name}</p>
           {episode._links?.show?.name && episode._links?.show?.href && <Link href={`/show/${episode._links.show.href.split("/").pop()}`}>Show: {episode._links.show.name}</Link>}
           <p className="text-sm flex items-end gap-1">
-            {episode.rating?.average && <Star/>} 
-            {episode.rating?.average ? episode.rating.average.toFixed(1) : 'Rating unavailable'}
+            {episode.rating?.average ? <Star/> : <Star unknown={true}/>} 
+            {episode.rating?.average ? episode.rating.average.toFixed(1) : '?'}
           </p>
           {episode.summary && episode.summary?.replace(/<[^>]+>/g, "")}
           {episode.airdate && <p>Airdate: {episode.airdate}</p>}

@@ -36,8 +36,8 @@ export default async function ShowPage({params}:{params:Promise<{showId: string;
       )}
       <h2 className="text-xl mt-2">{show.name}</h2>
       <p className="text-sm flex items-end gap-1">
-        {show.rating?.average && <Star/>} 
-        {show.rating?.average ? show.rating.average.toFixed(1) : 'Rating unavailable'}
+        {show.rating?.average ? <Star/> : <Star unknown={true}/>} 
+        {show.rating?.average ? show.rating.average.toFixed(1) : '?'}
       </p>
       {show.type && <p>Type: {show.type}</p>}
       {show.genres && show.genres.length > 0 && <p>Genres: {show.genres.join(', ')}</p>}

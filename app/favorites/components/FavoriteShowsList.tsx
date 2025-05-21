@@ -4,6 +4,7 @@ import ShowCard from "@/app/components/ShowCard";
 import { useState } from "react";
 import GenreSelectDropdown from "@/app/components/GenreSelectDropdown";
 import { Show } from "@/app/types/types";
+import Grid from "@/app/components/layout/Grid";
 
 export default function FavoriteShowsList({favorites}: {favorites: Show[]}) {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
@@ -14,13 +15,13 @@ export default function FavoriteShowsList({favorites}: {favorites: Show[]}) {
     );
 
   return(
-    <div>
+    <main className="flex flex-col">
       <GenreSelectDropdown selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres}/>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
+      <Grid>
       {filteredShows.map((show: Show) => (
         <ShowCard key={show.id} show={show}/>
       ))}
-      </div>
-    </div>
+      </Grid>
+    </main>
   );
 }

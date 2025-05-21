@@ -22,7 +22,9 @@ export default function FavoriteButton({ featureId, type, initialSaved }:{featur
 
   if(status !== "authenticated") return null;
 
-  function toggleFavorite() {
+  function toggleFavorite(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    e.preventDefault(); 
     startTransition(async () => {
       const method = saved ? "DELETE" : "POST";
       const res = await fetch(`/api/favorites/${type}`, {

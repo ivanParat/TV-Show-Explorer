@@ -48,9 +48,6 @@ export default function SearchPage() {
   if (loading) return <Loading/>;
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl mb-4 text-white">Results for &quot;{query}&quot;</h1>
-      <ShowList initialShows={shows} infiniteScroll={false} initialDate="" />
-    </div>
+    <ShowList initialShows={shows} infiniteScroll={false} initialDate="" />
   );
 }

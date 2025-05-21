@@ -41,8 +41,8 @@ export default async function SeasonPage({params}:{params:Promise<{showId: strin
       <p>S{episode.season} E{episode.number} - {episode.name}</p>
       {episode._links?.show?.name && <Link href={`/show/${showId}`}>Show: {episode._links.show.name}</Link>}
       <p className="text-sm flex items-end gap-1">
-        {episode.rating?.average && <Star/>} 
-        {episode.rating?.average ? episode.rating.average.toFixed(1) : 'Rating unavailable'}
+        {episode.rating?.average ? <Star/> : <Star unknown={true}/>} 
+        {episode.rating?.average ? episode.rating.average.toFixed(1) : '?'}
       </p>
       {episode.summary && episode.summary?.replace(/<[^>]+>/g, "")}
       {episode.airdate && <p>Airdate: {episode.airdate}</p>}

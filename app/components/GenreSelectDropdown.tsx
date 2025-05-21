@@ -82,7 +82,7 @@ export default function GenreSelectDropdown({
         value={selectedOptions}
         onChange={handleChange}
         placeholder="Filter by Genre..."
-        className="text-sm"
+        className="text-sm font-medium"
         classNamePrefix="react-select"
         styles={customStyles}
       />
