@@ -4,7 +4,7 @@ import ShowCard from "./ShowCard";
 import { useState, useEffect } from "react";
 import { useInView } from 'react-intersection-observer'
 import { sortShowsByRating } from "../lib/shows";
-import GenreCheckbox from "./GenreCheckbox";
+import GenreSelectDropdown from "./GenreSelectDropdown";
 import { Show } from "../types/types";
 
 export default function ShowList({initialShows, infiniteScroll, initialDate}: {initialShows: Show[], infiniteScroll: boolean, initialDate: string}) {
@@ -32,14 +32,14 @@ export default function ShowList({initialShows, infiniteScroll, initialDate}: {i
 
   if(!infiniteScroll){
     return(
-      <div>
-        <GenreCheckbox selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres}/>
+      <main className="flex flex-col">
+        <GenreSelectDropdown selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres}/>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
         {filteredShows.map((show: Show) => (
           <ShowCard key={show.id} show={show}/>
         ))}
         </div>
-      </div>
+      </main>
     );
   }
 
@@ -72,8 +72,8 @@ export default function ShowList({initialShows, infiniteScroll, initialDate}: {i
   }
 
   return (
-    <div>
-      <GenreCheckbox selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres}/>
+    <main className="flex flex-col">
+      <GenreSelectDropdown selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres}/>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
         {filteredShows.map((show: Show) => (
           <ShowCard key={show.id} show={show}/>
@@ -82,6 +82,6 @@ export default function ShowList({initialShows, infiniteScroll, initialDate}: {i
           Loading...
         </div>
       </div>
-    </div>
+    </main>
   );
 }
