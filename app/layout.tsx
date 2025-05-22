@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.variable} antialiased`}
+        className={`${roboto.variable} antialiased flex flex-col min-h-screen`}
       >
       <SessionProvider>
         <FavoriteSyncTracker/>
