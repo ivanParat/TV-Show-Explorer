@@ -6,7 +6,7 @@ import { Show } from "../types/types";
 
 export default function ShowCard({show}: {show: Show}) {
   return(
-    <div className="bg-card text-white rounded-xl">
+    <div className="bg-card text-white rounded-xl transition duration-200 hover:brightness-110 active:brightness-120">
       <Link href={`/show/${show.id}`} className="flex flex-col h-full">
         <div className="h-full flex flex-col">
           {show.image?.original && (
