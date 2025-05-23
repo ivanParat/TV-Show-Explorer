@@ -39,7 +39,7 @@ export default async function ShowPage({params}:{params:Promise<{showId: string;
           <button className="cursor-pointer hover:text-accent active:text-accent">Cast</button>
         </Link>
       </div>
-      <div className="flex flex-col sm:flex-row space-y-6 sm:space-y-0 px-8 sm:px-0 pt-8 pb-8 sm:pb-0 sm:space-x-8 justify-center items-center sm:items-stretch">
+      <div className="flex flex-col sm:flex-row space-y-6 sm:space-y-0 px-8 sm:px-0 pt-8 mb-8 sm:pb-0 sm:space-x-8 justify-center items-center sm:items-start">
         <div className="bg-card rounded-xl">
           {show.image?.original && (
             <Image src={show.image.original} alt={show.name} width={300} height={500} priority={true} className="rounded-t-xl"/>
@@ -55,7 +55,7 @@ export default async function ShowPage({params}:{params:Promise<{showId: string;
             </div>
           </div>
         </div>
-        <div className="space-y-3 sm:text-lg sm:w-1/3 bg-card rounded-xl p-4">
+        <div className="space-y-3 sm:text-lg sm:w-1/3 bg-card rounded-xl px-4 py-6">
           {show.summary && (
             <p>
               <span className="font-semibold">Summary: </span>

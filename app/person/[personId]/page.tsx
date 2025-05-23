@@ -29,24 +29,30 @@ export default async function PersonPage({params}: {params: Promise<{personId: s
   const person = await res.json();
 
   return(
-    <div>
-      {person.image?.original && <Image src={person.image.original} alt={person.name} width={210} height={295} priority={true}/>}
-      <p>{person.name}</p>
-      {person.birthday && <p>Date of birth: {person.birthday}</p>}
-      {person.deathday && <p>Date of death: {person.deathday}</p>}
-      {person.country?.name && <p>Country: {person.country.name}</p>}
-      {person.gender && <p>Gender: {person.gender}</p>}
-      <FavoriteButton featureId={person.id} type="people"/>
+    <main className="flex flex-col sm:flex-row space-y-6 sm:space-y-0 px-8 sm:px-0 pt-16 mb-8 sm:pb-0 sm:space-x-8 justify-center items-center sm:items-start">
+      <div className="bg-card rounded-xl">
+        {person.image?.original && <Image src={person.image.original} alt={person.name} width={300} height={500} priority={true} className="rounded-t-xl"/>}
+        <div className="px-3 pb-4 pt-2 text-md">
+          <h2 className="text-xl font-medium mt-2 mb-2">{person.name}</h2>
+          {person.birthday && <p>Date of birth: {person.birthday}</p>}
+          {person.deathday && <p>Date of death: {person.deathday}</p>}
+          {person.country?.name && <p>Country: {person.country.name}</p>}
+          <div className="flex justify-between">
+            {person.gender && <p>Gender: {person.gender}</p>}
+            <FavoriteButton featureId={person.id} type="people"/>
+          </div>
+        </div>
+      </div>
       {
         person._embedded?.castcredits &&
         (
-          <div>
-            <p>Cast Credits</p>
-            <table>
+          <div className="space-y-4 sm:text-lg sm:w-1/3 bg-card rounded-xl px-4 py-6">
+            <h2 className="font-medium text-lg sm:text-xl">Cast Credits</h2>
+            <table className="w-full">
               <thead>
                 <tr>
-                  <th>Show</th>
-                  <th>Character</th>
+                  <th className="text-left">Show</th>
+                  <th className="text-left">Character</th>
                 </tr>
               </thead>
               <tbody>
@@ -55,8 +61,11 @@ export default async function PersonPage({params}: {params: Promise<{personId: s
                     <td>
                       {
                         credit._links?.show && 
-                        <div>
-                          <Link href={`/show/${credit._links.show.href.split("/").pop()}`}>
+                        <div className="flex items-center mt-1 mr-2">
+                          <Link 
+                            href={`/show/${credit._links.show.href.split("/").pop()}`}
+                            className="hover:text-accent active:text-accent mr-2"
+                          >
                             {credit._links.show.name}
                           </Link>
                           <FavoriteButton featureId={Number(credit._links.show.href.split("/").pop())} type="shows"/>
@@ -73,6 +82,6 @@ export default async function PersonPage({params}: {params: Promise<{personId: s
           </div>
         )
       }
-    </div>
+    </main>
   );
 }
