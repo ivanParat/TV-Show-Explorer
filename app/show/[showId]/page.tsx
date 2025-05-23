@@ -30,30 +30,83 @@ export default async function ShowPage({params}:{params:Promise<{showId: string;
   const show = await res.json();
 
   return (
-    <div className="bg-gray-800 text-white p-4 rounded">
-      {show.image?.original && (
-        <Image src={show.image.original} alt={show.name} width={210} height={295} priority={true}/>
-      )}
-      <h2 className="text-xl mt-2">{show.name}</h2>
-      <p className="text-sm flex items-end gap-1">
-        {show.rating?.average ? <Star/> : <Star unknown={true}/>} 
-        {show.rating?.average ? show.rating.average.toFixed(1) : '?'}
-      </p>
-      {show.type && <p>Type: {show.type}</p>}
-      {show.genres && show.genres.length > 0 && <p>Genres: {show.genres.join(', ')}</p>}
-      {show.language && <p>Language: {show.language}</p>}
-      {show.premiered && <p>Premiered: {show.premiered}</p>}
-      {show.ended && <p>Ended: {show.ended}</p>}
-      {show.status && <p>Status: {show.status}</p>}
-      {show.averageRuntime && <p>Average Runtime: {show.averageRuntime} min</p>}
-      {show.summary && show.summary?.replace(/<[^>]+>/g, "")}
-      <Link href={`/show/${showId}/season`}>
-        <button className="cursor-pointer">View Episodes</button>
-      </Link>
-      <Link href={`/show/${showId}/cast`}>
-        <button className="cursor-pointer">View Cast</button>
-      </Link>
-      <FavoriteButton featureId={show.id} type={'shows'}/>
-    </div>
+    <main className="flex flex-col">
+      <div className="flex space-x-6 text-lg font-medium justify-center py-3">
+        <Link href={`/show/${showId}/season`}>
+          <button className="cursor-pointer hover:text-accent active:text-accent">Episodes</button>
+        </Link>
+        <Link href={`/show/${showId}/cast`}>
+          <button className="cursor-pointer hover:text-accent active:text-accent">Cast</button>
+        </Link>
+      </div>
+      <div className="flex flex-col sm:flex-row space-y-6 sm:space-y-0 px-8 sm:px-0 pt-8 pb-8 sm:pb-0 sm:space-x-8 justify-center items-center sm:items-stretch">
+        <div className="bg-card rounded-xl">
+          {show.image?.original && (
+            <Image src={show.image.original} alt={show.name} width={300} height={500} priority={true} className="rounded-t-xl"/>
+          )}
+          <div className="px-3 pb-4 pt-2">
+            <h2 className="text-xl font-medium mt-2">{show.name}</h2>
+            <div className="flex justify-between">
+              <p className="text-sm flex items-end gap-1">
+                {show.rating?.average ? <Star/> : <Star unknown={true}/>} 
+                {show.rating?.average ? show.rating.average.toFixed(1) : '?'}
+              </p>
+              <FavoriteButton featureId={show.id} type={'shows'}/>
+            </div>
+          </div>
+        </div>
+        <div className="space-y-3 sm:text-lg sm:w-1/3 bg-card rounded-xl p-4">
+          {show.summary && (
+            <p>
+              <span className="font-semibold">Summary: </span>
+              <span>{show.summary.replace(/<[^>]+>/g, "")}</span>
+            </p>
+          )}
+          {show.genres && show.genres.length > 0 && (
+            <p>
+              <span className="font-semibold">Genres: </span>
+              <span>{show.genres.join(', ')}</span>
+            </p>
+          )}
+          {show.type && (
+            <p>
+              <span className="font-semibold">Type: </span>
+              <span>{show.type}</span>
+            </p>
+          )}
+          {show.language && (
+            <p>
+              <span className="font-semibold">Language: </span>
+              <span>{show.language}</span>
+            </p>
+          )}
+          {show.premiered && (
+            <p>
+              <span className="font-semibold">Premiered: </span>
+              <span>{show.premiered}</span>
+            </p>
+          )}
+          {show.ended && (
+            <p>
+              <span className="font-semibold">Ended: </span>
+              <span>{show.ended}</span>
+            </p>
+          )}
+          {show.status && (
+            <p>
+              <span className="font-semibold">Status: </span>
+              <span>{show.status}</span>
+            </p>
+          )}
+          {show.averageRuntime && (
+            <p>
+              <span className="font-semibold">Average Runtime: </span>
+              <span>{show.averageRuntime} min</span>
+            </p>
+          )}
+        </div>
+
+      </div>
+    </main>
   );
 }
