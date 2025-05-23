@@ -28,26 +28,35 @@ export async function generateMetadata({params}:{params:Promise<{showId: string;
   };
 }
 
-export default async function SeasonPage({params}:{params:Promise<{showId: string; episodeId: string}>}){
+export default async function EpisodePage({params}:{params:Promise<{showId: string; episodeId: string}>}){
   const { showId, episodeId } = await params;
   const res = await fetch(`https://api.tvmaze.com/episodes/${episodeId}`, { next: { revalidate: 3600 } });
   if (!res.ok){
     return <NotFound/>;
   }
   const episode = await res.json();
+  const showName = episode._links?.show?.name;
   return(
-    <div>
-      {episode.image?.original &&  <Image src={episode.image.original} alt={episode.name} width={300} height={300} priority={true}/>}
-      <p>S{episode.season} E{episode.number} - {episode.name}</p>
-      {episode._links?.show?.name && <Link href={`/show/${showId}`}>Show: {episode._links.show.name}</Link>}
-      <p className="text-sm flex items-end gap-1">
-        {episode.rating?.average ? <Star/> : <Star unknown={true}/>} 
-        {episode.rating?.average ? episode.rating.average.toFixed(1) : '?'}
-      </p>
-      {episode.summary && episode.summary?.replace(/<[^>]+>/g, "")}
-      {episode.airdate && <p>Airdate: {episode.airdate}</p>}
-      {episode.runtime && <p>Runtime: {episode.runtime} min</p>}
-      <FavoriteButton featureId={episode.id} type="episodes"/>
-    </div>
+    <main className="flex flex-col sm:flex-row space-y-6 sm:space-y-0 px-8 sm:px-0 pt-16 sm:pt-20 mb-8 sm:pb-0 sm:space-x-8 justify-center items-center sm:items-start">
+      <div className="bg-card rounded-xl">
+        {episode.image?.original && <Image src={episode.image.original} alt={episode.name} width={450} height={500} priority={true} className="rounded-t-xl"/>}
+        <div className="px-3 pb-4 pt-2 flex flex-col justify-between grow">
+          <h2 className="text-lg font-medium mt-2"><Link href={`/show/${showId}`} className="hover:text-accent active:text-accent">{showName}</Link> S{episode.season} E{episode.number}</h2>
+          <h2 className="text-lg font-regular">{episode.name}</h2>
+          <div className="flex justify-between">
+            <p className="text-sm flex items-end gap-1">
+              {episode.rating?.average ? <Star/> : <Star unknown={true}/>} 
+              {episode.rating?.average ? episode.rating.average.toFixed(1) : '?'}
+            </p>
+            <FavoriteButton featureId={episode.id} type={'episodes'}/>
+          </div>
+        </div>
+      </div>
+      <div className="space-y-2 sm:text-lg sm:w-1/3 bg-card rounded-xl px-4 py-6">
+        {episode.summary && <p><span className="font-semibold">Summary: </span><span>{episode.summary?.replace(/<[^>]+>/g, "")}</span></p>}
+        {episode.airdate && <p><span className="font-semibold">Airdate: </span><span>{episode.airdate}</span></p>}
+        {episode.runtime && <p><span className="font-semibold">Runtime: </span><span>{episode.runtime} min</span></p>}
+      </div>
+    </main>
   );
 }
