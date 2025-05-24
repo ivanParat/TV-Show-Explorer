@@ -43,7 +43,7 @@ export default async function CastPage({params}:{params:Promise<{showId: string;
       <div className="flex text-lg sm:text-xl font-medium justify-center pt-3 pb-5">
         <span className="whitespace-nowrap">
           <Link href={`/show/${showId}`}>
-            <button className="cursor-pointer hover:text-accent active:text-accent">{show.name}</button>
+            <button className="cursor-pointer hover:text-accent active:text-accent" aria-label="View show">{show.name}</button>
           </Link>
           <span>&nbsp;Cast</span>
         </span>

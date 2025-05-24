@@ -50,7 +50,7 @@ export default function SeasonNavigation({seasons, showId, showName}: {seasons: 
       <div className="flex text-lg font-medium justify-center">
         <span className="whitespace-nowrap">
           <Link href={`/show/${showId}`}>
-            <button className="cursor-pointer hover:text-accent active:text-accent">
+            <button className="cursor-pointer hover:text-accent active:text-accent" aria-label="View show">
               {showName}
             </button>
           </Link>
@@ -63,6 +63,7 @@ export default function SeasonNavigation({seasons, showId, showName}: {seasons: 
           <button
             onClick={() => scroll("left")}
             className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-card px-2 py-1 rounded-l hover:bg-muted"
+            aria-label="Scroll through seasons to the left"
           >
             <ChevronLeft />
           </button>
@@ -86,7 +87,7 @@ export default function SeasonNavigation({seasons, showId, showName}: {seasons: 
                   : "hover:text-gray-300 active:text-gray-300"
               }`}
             >
-              <button className="cursor-pointer whitespace-nowrap">
+              <button className="cursor-pointer whitespace-nowrap" aria-label={`View episodes of season ${season.number}`}>
                 {season.number}
               </button>
             </Link>
@@ -97,6 +98,7 @@ export default function SeasonNavigation({seasons, showId, showName}: {seasons: 
           <button
             onClick={() => scroll("right")}
             className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-card px-2 py-1 rounded-r hover:bg-muted"
+            aria-label="Scroll through seasons to the right"
           >
             <ChevronRight />
           </button>

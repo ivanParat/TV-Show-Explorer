@@ -33,10 +33,10 @@ export default async function ShowPage({params}:{params:Promise<{showId: string;
     <main className="flex flex-col">
       <div className="flex space-x-6 text-lg font-medium justify-center py-3">
         <Link href={`/show/${showId}/season`}>
-          <button className="cursor-pointer hover:text-accent active:text-accent">Episodes</button>
+          <button className="cursor-pointer hover:text-accent active:text-accent" aria-label="View episodes">Episodes</button>
         </Link>
         <Link href={`/show/${showId}/cast`}>
-          <button className="cursor-pointer hover:text-accent active:text-accent">Cast</button>
+          <button className="cursor-pointer hover:text-accent active:text-accent" aria-label="View cast">Cast</button>
         </Link>
       </div>
       <div className="flex flex-col sm:flex-row space-y-6 sm:space-y-0 px-8 sm:px-0 pt-8 mb-8 sm:pb-0 sm:space-x-8 justify-center items-center sm:items-start">

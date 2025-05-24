@@ -71,12 +71,13 @@ export function Navigation() {
               <li className="font-semibold">{session.data.user.name}</li>
               <li>    
                 <button 
-                  onClick={() => syncAndSignOut(session.data.user.id)}
+                  onClick={() => syncAndSignOut(session.data?.user?.id)}
                   className="font-bold
                   bg-brand text-white px-6 py-1 rounded-md hover:bg-brand-hover active:bg-brand-hover 
                   cursor-pointer
                   h-[32px] w-[110px]
                   flex justify-center items-center"  
+                  aria-label="Sign Out"
                 >
                   Sign Out
                 </button>
@@ -138,12 +139,13 @@ export function Navigation() {
               <li className="font-semibold">{session.data.user.name}</li>
               <li>    
                 <button 
-                  onClick={() => syncAndSignOut(session.data.user.id)}
+                  onClick={() => syncAndSignOut(session.data?.user?.id)}
                   className="font-bold
                   bg-brand text-white px-6 py-1 rounded-md hover:bg-brand-hover active:bg-brand-hover 
                   cursor-pointer
                   h-[32px] w-[110px]
                   flex justify-center items-center"  
+                  aria-label="Sign Out"
                 >
                   Sign Out
                 </button>

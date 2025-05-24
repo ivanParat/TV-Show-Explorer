@@ -1,4 +1,4 @@
-export default function NavButton({ children, onClick }: { children: React.ReactNode, onClick?: Function }){
+export default function NavButton({ children, onClick, ariaLabel }: { children: React.ReactNode, onClick?: Function, ariaLabel: string }){
   return (
     <button 
       onClick={onClick ? () => onClick() : undefined}
@@ -8,6 +8,7 @@ export default function NavButton({ children, onClick }: { children: React.React
       h-[32px] w-[110px]
       md:ml-1 lg:ml-3 xl:ml-5
       flex justify-center items-center"  
+      aria-label={ariaLabel}
     > 
       {children}
     </button>
