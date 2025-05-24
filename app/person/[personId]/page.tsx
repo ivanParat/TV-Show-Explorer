@@ -30,7 +30,7 @@ export default async function PersonPage({params}: {params: Promise<{personId: s
 
   return(
     <main className="flex flex-col sm:flex-row space-y-6 sm:space-y-0 px-8 sm:px-0 pt-16 mb-8 sm:pb-0 sm:space-x-8 justify-center items-center sm:items-start">
-      <div className="bg-card rounded-xl">
+      <div className="bg-card rounded-xl max-w-[300px]">
         {person.image?.original && <Image src={person.image.original} alt={person.name} width={300} height={500} priority={true} className="rounded-t-xl"/>}
         <div className="px-3 pb-4 pt-2 text-md">
           <h2 className="text-xl font-medium mt-2 mb-2">{person.name}</h2>

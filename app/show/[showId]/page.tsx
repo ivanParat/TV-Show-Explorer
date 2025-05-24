@@ -40,7 +40,7 @@ export default async function ShowPage({params}:{params:Promise<{showId: string;
         </Link>
       </div>
       <div className="flex flex-col sm:flex-row space-y-6 sm:space-y-0 px-8 sm:px-0 pt-8 mb-8 sm:pb-0 sm:space-x-8 justify-center items-center sm:items-start">
-        <div className="bg-card rounded-xl">
+        <div className="bg-card rounded-xl max-w-[300px]">
           {show.image?.original && (
             <Image src={show.image.original} alt={show.name} width={300} height={500} priority={true} className="rounded-t-xl"/>
           )}

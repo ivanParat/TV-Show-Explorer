@@ -38,7 +38,7 @@ export default async function EpisodePage({params}:{params:Promise<{showId: stri
   const showName = episode._links?.show?.name;
   return(
     <main className="flex flex-col sm:flex-row space-y-6 sm:space-y-0 px-8 sm:px-0 pt-16 sm:pt-20 mb-8 sm:pb-0 sm:space-x-8 justify-center items-center sm:items-start">
-      <div className="bg-card rounded-xl">
+      <div className="bg-card rounded-xl max-w-[450px]">
         {episode.image?.original && <Image src={episode.image.original} alt={episode.name} width={450} height={500} priority={true} className="rounded-t-xl"/>}
         <div className="px-3 pb-4 pt-2 flex flex-col justify-between grow">
           <h2 className="text-lg font-medium mt-2"><Link href={`/show/${showId}`} className="hover:text-accent active:text-accent">{showName}</Link> S{episode.season} E{episode.number}</h2>

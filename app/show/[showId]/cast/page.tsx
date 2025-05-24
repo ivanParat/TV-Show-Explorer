@@ -41,26 +41,28 @@ export default async function CastPage({params}:{params:Promise<{showId: string;
   return(
     <main className="flex flex-col items-center pb-8 px-4">
       <div className="flex text-lg sm:text-xl font-medium justify-center pt-3 pb-5">
-        <Link href={`/show/${showId}`}>
-          <button className="cursor-pointer hover:text-accent active:text-accent">{show.name}</button>
-        </Link>
-        <span>&nbsp;Cast</span>
+        <span className="whitespace-nowrap">
+          <Link href={`/show/${showId}`}>
+            <button className="cursor-pointer hover:text-accent active:text-accent">{show.name}</button>
+          </Link>
+          <span>&nbsp;Cast</span>
+        </span>
       </div>
-      <div className="bg-card px-6 sm:px-16 py-6 rounded-xl">
+      <div className="bg-card px-2 sm:px-16 py-6 rounded-xl">
         <table>
           <thead>
             <tr className="font-semibold text-left text-md sm:text-lg">
               <th>Actor</th>
-              <th className="pl-12 sm:pl-18">Character</th>
+              <th className="pl-0 sm:pl-18">Character</th>
             </tr>
           </thead>
-          <tbody className="text-md">
+          <tbody className="sm:text-lg">
             {cast.map((castMember: CastMember, index: number) => (
               <tr key={index}>
                 <td>
                   {castMember.person?.image?.medium && 
                   <Link href={`/person/${castMember.person.id}`}>
-                    <Image src={castMember.person.image.medium} alt={castMember.person.name} width={100} height={100} className="mt-5 rounded-md transition duration-200 hover:brightness-110 active:brightness-120"/>
+                    <Image src={castMember.person.image.medium} alt={castMember.person.name} width={120} height={100} className="mt-5 rounded-md transition duration-200 hover:brightness-110 active:brightness-120"/>
                   </Link>}
                   <div className="mt-1 flex items-end gap-2">
                     <Link href={`/person/${castMember.person.id}`} className="cursor-pointer hover:text-accent active:text-accent">
@@ -69,8 +71,8 @@ export default async function CastPage({params}:{params:Promise<{showId: string;
                     <FavoriteButton featureId={castMember.person.id} type="people"/>
                   </div>
                 </td>
-                <td className="pl-12 sm:pl-18">
-                  {castMember.character?.image?.medium && <Image src={castMember.character.image.medium} alt={castMember.person.name} width={100} height={100} className="rounded-md mt-5"/>}                
+                <td className="pl-0 sm:pl-18">
+                  {castMember.character?.image?.medium && <Image src={castMember.character.image.medium} alt={castMember.person.name} width={120} height={100} className="rounded-md mt-5"/>}                
                   <p className="mt-1">{castMember.character.name}</p>
                 </td>
               </tr>

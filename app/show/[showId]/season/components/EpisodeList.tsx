@@ -1,18 +1,15 @@
-import Link from "next/link";
-import FavoriteButton from "@/app/components/FavoriteButton";
+import Grid from "@/app/components/layout/Grid";
+import EpisodeCard from "./EpisodeCard";
 import { Episode } from "@/app/types/types";
 
-export default function EpisodeList({episodes, showId}: {episodes: Episode[], showId: string}){
+export default function EpisodeList({episodes}: {episodes: Episode[]}){
   return (
-    <div>
+    <div className="flex flex-col">
+      <Grid>
       {episodes.map((episode: Episode) => (
-        <div key={episode.id}>
-          <Link href={`/show/${showId}/episode/${episode.id}`}>
-            <p>S{episode.season} E{episode.number} - {episode.name}</p>
-          </Link>
-          <FavoriteButton featureId={episode.id} type={'episodes'}/>
-        </div>
+        <EpisodeCard key={episode.id} episode={episode}/>
       ))}
+      </Grid>
     </div>
   );
 }
