@@ -6,7 +6,18 @@ const nextConfig: NextConfig = {
 
 module.exports = {
   images: {
-    remotePatterns: [new URL('https://static.tvmaze.com/uploads/images/**')],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "static.tvmaze.com",
+        pathname: "/uploads/images/**",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        pathname: "/u/**",
+      },
+    ],
   },
   eslint: {
     ignoreDuringBuilds: true,

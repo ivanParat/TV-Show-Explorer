@@ -75,7 +75,7 @@ export default function GenreSelectDropdown({
   const selectedOptions = genreOptions.filter(option => selectedGenres.includes(option.value));
 
   return (
-    <div className="px-6 pt-4 max-w-md self-end">
+    <div className="px-4 lg:px-8 xl:px-12 pt-4 max-w-md self-end">
       <Select
         isMulti
         options={genreOptions}

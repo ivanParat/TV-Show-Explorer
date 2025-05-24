@@ -18,9 +18,6 @@ export default function SeasonNavigation({seasons, showId, showName}: {seasons: 
   const updateScrollButtons = () => {
     const el = scrollRef.current;
     if (!el) return;
-    console.log(el.scrollLeft)
-    console.log(el.clientWidth)
-    console.log(el.scrollWidth)
     setShowLeftArrow(el.scrollLeft > 0);
     setShowRightArrow(el.scrollLeft + el.clientWidth < el.scrollWidth);
   };

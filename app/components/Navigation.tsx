@@ -1,122 +1,156 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useRef } from "react";
 import { useSession } from 'next-auth/react';
 import SignInButton from "./SignInButton";
 import SignOutButton from "./SignOutButton";
 import { Suspense } from 'react'
-
-function SearchBar(){
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [input, setInput] = useState(searchParams.get("q") || "");
-  const handleSearch = () => {
-    if (!input.trim()) return; // Do nothing if input is empty or just spaces
-    router.push(`/search?q=${encodeURIComponent(input)}`);
-  };
-
-  useEffect(() => {
-    if (!searchParams.get("q")) {
-      setInput("");
-    }
-  }, [searchParams]);
-
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-
-  return (
-    <>
-      {/* Hidden on mobile */}
-      <div className="hidden md:flex items-center bg-gray-dark rounded-lg px-2 py-1 md:w-32 lg:w-60 xl:w-80">
-        <input
-          type="text"
-          placeholder="Search..."
-          className="w-full px-2 outline-none text-main-text bg-gray-dark"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-        />
-        <button 
-          className="ml-2 text-main-text hover:text-brand"
-          onClick={handleSearch}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
-            <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
-          </svg>
-        </button>
-      </div>
-
-      {/* Visible on mobile */}
-      <div className="md:hidden flex justify-center pl-3">
-        {isSearchOpen ? (
-          <div className="flex items-center bg-gray-dark rounded-lg px-2 w-full">
-            <button onClick={() => { setIsSearchOpen(false);}} className="ml-2 text-white hover:text-brand">
-              ✖️
-            </button>
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full px-2 outline-none text-main-text bg-gray-dark"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            />
-            <button className="ml-2  hover:text-brand" onClick={() => { setIsSearchOpen(false); handleSearch()}}>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-              </svg>
-            </button>
-          </div>
-        ) : (
-          <button className="ml-2  hover:text-brand" onClick={() => { setIsSearchOpen(true);}}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-            </svg>
-          </button>
-        )}
-      </div>
-    </>
-  )
-}
+import LoadingButton from "./LoadingButton";
+import { useClickOutside } from "../hooks/useClickOutside";
+import ProfilePicture from "./ProfilePicture";
+import { syncAndSignOut } from "../lib/auth";
+import SearchBar from "./SearchBar";
+import Hamburger from "./Hamburger";
 
 export function Navigation() {
   const session = useSession();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileClicked, setIsProfileClicked] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
+  const toggleProfile = () => setIsProfileClicked(!isProfileClicked);
+  const closeProfile = () => setIsProfileClicked(false);
+
+  useClickOutside(navRef, closeMenu);
+  useClickOutside(navRef, closeProfile);
 
   return (
-    <nav className="flex h-14 items-center justify-between px-2 md:px-4 lg:px-8 xl:px-12">
+    <nav className="flex h-14 items-center justify-between px-2 sm:px-4 lg:px-8 xl:px-12 relative" ref={navRef}>
       <div>
         <Suspense>
           <SearchBar/>
         </Suspense>
       </div>
-      <ul className="flex justify-center items-center">
-        <Link 
-          href={"/"}
-          className="font-bold hover:text-brand active:text-brand px-5 py-1 md:px-1 lg:px-3 xl:px-5"
-        >
-          Home
-        </Link>
+
+      {/*hidden on mobile*/}
+      <ul className="hidden sm:flex justify-center items-center">
+        <li>
+          <Link 
+            href={"/"}
+            className="font-bold hover:text-brand-hover active:text-brand-hover px-5 py-1 sm:px-1 lg:px-3 xl:px-5"
+          >
+            Home
+          </Link>
+        </li>
         {
           session?.status == "authenticated" &&
+          <li>
           <Link 
-          href={"/favorites/shows"}
-          className="font-bold hover:text-brand active:text-brand px-5 py-1 md:px-1 lg:px-3 xl:px-5"
-        >
-          Favorites
-        </Link>
+            href={"/favorites/shows"}
+            className="font-bold hover:text-brand-hover active:text-brand-hover px-5 py-1 sm:px-1 lg:px-3 xl:px-5"
+          >
+            Favorites
+          </Link>
+          </li>
         }
 
-        <Link
-          href={"/login"}
-          className="font-bold md:ml-1 lg:ml-3 xl:ml-5"
-        >
-          <button className="bg-brand text-white px-6 py-1 rounded-md hover:bg-brand-hover active:bg-brand-hover cursor-pointer">
-            Log in
-          </button>
-        </Link>
-        {session?.status == "loading" ? <p>Loading...</p> : session?.status == "authenticated" && session.data?.user?.id ? <SignOutButton userId={session.data.user.id}/> : <SignInButton/>}
+        {
+          session?.status == "loading" ? 
+          <LoadingButton/> : 
+          session?.status == "authenticated" && session.data?.user?.id && session.data?.user?.image && session.data?.user?.name ? 
+          <>
+            <ProfilePicture src={session.data.user.image} name={session.data.user.name} onClick={toggleProfile}/>
+            <ul
+              className={
+                `flex flex-col absolute top-full right-3 items-center w-1/2 sm:w-1/10 py-6 space-y-6 text-sm sm:text-md text-white z-10 bg-card
+                ${ !isProfileClicked ? "hidden" : ""}`
+              }
+            >
+              <li className="font-semibold">{session.data.user.name}</li>
+              <li>    
+                <button 
+                  onClick={() => syncAndSignOut(session.data.user.id)}
+                  className="font-bold
+                  bg-brand text-white px-6 py-1 rounded-md hover:bg-brand-hover active:bg-brand-hover 
+                  cursor-pointer
+                  h-[32px] w-[110px]
+                  flex justify-center items-center"  
+                >
+                  Sign Out
+                </button>
+              </li>
+            </ul>
+          </> :
+          session?.status == "authenticated" && session.data?.user?.id ?
+          <SignOutButton userId={session.data.user.id}/> : 
+          <SignInButton/>
+        }
 
+      </ul>
+
+      {/*visible on mobile*/}
+      <ul className="flex sm:hidden justify-center items-center">
+        <Hamburger isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+        <ul
+          className={
+            `flex sm:hidden flex-col absolute top-full right-3 items-center w-1/2 py-6 space-y-6 text-sm text-white z-10 bg-card
+            ${ !isMenuOpen ? "hidden" : ""}`
+          }
+        >
+          <li>
+            <Link 
+              href={"/"}
+              className="font-bold hover:text-brand-hover active:text-brand-hover px-5 py-1 sm:px-1 lg:px-3 xl:px-5"
+              onClick={closeMenu}
+            >
+              Home
+            </Link>
+          </li>
+          {
+            session?.status == "authenticated" &&
+            <li>
+            <Link 
+              href={"/favorites/shows"}
+              className="font-bold hover:text-brand-hover active:text-brand-hover px-5 py-1 sm:px-1 lg:px-3 xl:px-5"
+              onClick={closeMenu}
+            >
+              Favorites
+            </Link>
+            </li>
+          }
+
+          {session?.status == "loading" && <LoadingButton/>} 
+          {session?.status == "unauthenticated" && <SignInButton/>}
+
+        </ul>
+        {
+          session?.status == "authenticated" && session.data?.user?.id && session.data?.user?.image && session.data?.user?.name && 
+          <>
+            <ProfilePicture src={session.data.user.image} name={session.data.user.name} onClick={toggleProfile}/>
+            <ul
+              className={
+                `flex flex-col absolute top-full right-3 items-center w-1/2 sm:w-1/10 py-6 space-y-6 text-sm sm:text-md text-white z-10 bg-card
+                ${ !isProfileClicked ? "hidden" : ""}`
+              }
+            >
+              <li className="font-semibold">{session.data.user.name}</li>
+              <li>    
+                <button 
+                  onClick={() => syncAndSignOut(session.data.user.id)}
+                  className="font-bold
+                  bg-brand text-white px-6 py-1 rounded-md hover:bg-brand-hover active:bg-brand-hover 
+                  cursor-pointer
+                  h-[32px] w-[110px]
+                  flex justify-center items-center"  
+                >
+                  Sign Out
+                </button>
+              </li>
+            </ul>
+          </> 
+        }
       </ul>
     </nav>
   );
