@@ -1,3 +1,5 @@
+//komponenta koja omogućuje navigaciju između sezona određene serije, ako je duljina liste svih sezona dulja od širine ekrana, prikazuju se strelice koje omogućuju scrollanje lijevo i desno
+
 "use client"
 
 import Link from "next/link";
@@ -7,9 +9,9 @@ import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react"; 
 
 export default function SeasonNavigation({seasons, showId, showName}: {seasons: Season[], showId: string, showName: string}){
-  const pathname = usePathname();
-  const match = pathname.match(/\/show\/\d+\/season\/(\d+)/);
-  const selectedSeasonId = match ? Number(match[1]) : seasons[0].id;
+  const pathname = usePathname(); //ovako saznajemo koja je sezona trenutno odabrana
+  const match = pathname.match(/\/show\/\d+\/season\/(\d+)/); 
+  const selectedSeasonId = match ? Number(match[1]) : seasons[0].id; //potrebno zbog različitih putanja za stranicu prve sezone i stranica ostalih sezona
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
@@ -18,8 +20,8 @@ export default function SeasonNavigation({seasons, showId, showName}: {seasons: 
   const updateScrollButtons = () => {
     const el = scrollRef.current;
     if (!el) return;
-    setShowLeftArrow(el.scrollLeft > 0);
-    setShowRightArrow(el.scrollLeft + el.clientWidth < el.scrollWidth);
+    setShowLeftArrow(el.scrollLeft > 0); //lijeva strelica se prikazuje ako nije scrollano skroz lijevo
+    setShowRightArrow(el.scrollLeft + el.clientWidth < el.scrollWidth); //desna strelica se prikazuje ako nije scrollano skroz desno
   };
 
   useEffect(() => {

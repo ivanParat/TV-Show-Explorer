@@ -1,3 +1,5 @@
+//prikazuje epizode koje su u korisnikovim favoritima, favoriti se dobivaju slanjem zahtjeva na endpoint koji čita favorite iz cookieja
+
 "use client";
 
 import { useEffect, useState } from "react";

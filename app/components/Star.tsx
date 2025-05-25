@@ -1,3 +1,5 @@
+//ako postoji prosječna ocjena u podatcima s API-ja, zvijezda je žuta, a ako ne, onda je bijela
+
 export default function Star({unknown}: {unknown?: boolean}){
   const color = unknown ? "#ffffff" : "#FFC107";
   return (

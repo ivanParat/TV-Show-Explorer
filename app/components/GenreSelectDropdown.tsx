@@ -1,3 +1,6 @@
+//služi za filtriranje serija na temelju odabranih žanrova
+//komponenta kao props prima stanje selectedGenres(odabrani žanrovi) te set funkciju za to stanje
+
 "use client"
 
 import Select from "react-select";

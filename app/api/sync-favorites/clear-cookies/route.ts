@@ -1,3 +1,5 @@
+//briše favorite iz cookieja
+
 import { NextResponse } from "next/server";
 import { clearCookies } from "@/app/lib/cookies";
 

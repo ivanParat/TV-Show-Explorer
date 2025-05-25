@@ -1,3 +1,5 @@
+//stvorena komponenta jer se ovaj isti layout koristi na više mjesta
+
 export default function Grid({ children }: { children: React.ReactNode }){
   return(
     <div className="

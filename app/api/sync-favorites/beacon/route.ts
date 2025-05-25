@@ -1,3 +1,5 @@
+//sinkronizira favorite u bazi s favoritima u cookies
+
 import { NextResponse } from "next/server";
 import { sendCookieDataToDB } from "@/app/lib/cookies-db-sync";
 

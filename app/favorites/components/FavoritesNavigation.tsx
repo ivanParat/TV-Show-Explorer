@@ -1,3 +1,5 @@
+//omogućuje navigaciju između favorite serija, favorite glumaca i favorite epizoda
+
 'use client'
  
 import { usePathname } from 'next/navigation'
@@ -6,7 +8,7 @@ import Link from "next/link";
 const types = ["shows", "episodes", "people"];
 
 export default function FavoritesNavigation(){
-  const pathname = usePathname();
+  const pathname = usePathname(); 
   return (
     <div className="flex space-x-6 text-lg font-medium justify-center py-3">
       {types.map((type:string, index: number) => (

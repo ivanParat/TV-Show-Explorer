@@ -1,3 +1,6 @@
+//stranica prikazuje epizode sezone određene serije (osim prve sezone), te mogućnost prelaska na stranicu neke druge sezone
+//razlog zašto je stranica prve sezone odvojena od stranica drugih sezona je taj što prva sezona nije uvijek označena brojem 1 u podatcima s API-ja (npr. kod serije EastEnders), tako da ne možemo pretpostavljati da za svaku seriju postoji stranica /show/[showId]/season/1, iako za većinu postoji
+
 import SeasonNavigation from "../components/SeasonNavigation";
 import EpisodeList from "../components/EpisodeList";
 import NotFound from "@/app/not-found";

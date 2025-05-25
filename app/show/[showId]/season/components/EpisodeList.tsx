@@ -1,5 +1,5 @@
 import Grid from "@/app/components/layout/Grid";
-import EpisodeCard from "./EpisodeCard";
+import EpisodeCard from "@/app/components/EpisodeCard";
 import { Episode } from "@/app/types/types";
 
 export default function EpisodeList({episodes}: {episodes: Episode[]}){

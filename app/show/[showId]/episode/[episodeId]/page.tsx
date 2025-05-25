@@ -1,3 +1,5 @@
+//stranica prikazuje osnovne informacije o nekoj epizodi
+
 import Image from "next/image";
 import Link from "next/link";
 import Star from "@/app/components/Star";

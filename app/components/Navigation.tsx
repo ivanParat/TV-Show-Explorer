@@ -1,3 +1,6 @@
+//navbar - sadrži search bar, link na home page, link na favorites page (ako je korisnik logiran), tipku za logiranje ako korisnik nije logiran, odnosno profilnu sliku ako je logiran (+ dropdown gdje se može odjaviti)
+//na mobilnoj verziji se search bar otvara tek kad se pritisne search ikona, a linkovi na stranice tek kada se pritisne hamburger
+
 "use client";
 
 import Link from "next/link";
@@ -23,8 +26,8 @@ export function Navigation() {
   const toggleProfile = () => setIsProfileClicked(!isProfileClicked);
   const closeProfile = () => setIsProfileClicked(false);
 
-  useClickOutside(navRef, closeMenu);
-  useClickOutside(navRef, closeProfile);
+  useClickOutside(navRef, closeMenu); //kad kliknemo bilo gdje izvan navbara, zatvori se dropdown menu na mobilnoj verziji
+  useClickOutside(navRef, closeProfile); //kad kliknemo bilo gdje izvan navbara, zatvori se dropdown koji se pojavi kad se klikne na profilnu sliku
 
   return (
     <nav className="flex h-14 items-center justify-between px-2 sm:px-4 lg:px-8 xl:px-12 relative" ref={navRef}>

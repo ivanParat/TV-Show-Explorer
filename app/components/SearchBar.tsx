@@ -8,8 +8,8 @@ export default function SearchBar(){
   const searchParams = useSearchParams();
   const [input, setInput] = useState(searchParams.get("q") || "");
   const handleSearch = () => {
-    if (!input.trim()) return; // Do nothing if input is empty or just spaces
-    router.push(`/search?q=${encodeURIComponent(input)}`);
+    if (!input.trim()) return; // Ne radi ništa ako je input prazan ili samo razmaci
+    router.push(`/search?q=${encodeURIComponent(input)}`); // Šalje nas na Search stranicu te postavlja parametar q kako bi Search stranica znala što je traženo
   };
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function SearchBar(){
     }
   }, [searchParams]);
 
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false); //stanje koje služi za praćenje UI-a na mobilnoj verziji
 
   return (
     <>

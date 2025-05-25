@@ -1,3 +1,5 @@
+//stranica prikazuje glumce i njihove likove neke serije
+
 import Link from "next/link";
 import Image from "next/image";
 import FavoriteButton from "@/app/components/FavoriteButton";

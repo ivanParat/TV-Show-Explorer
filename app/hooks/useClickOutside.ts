@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function useClickOutside(ref: React.RefObject<HTMLElement | null>, callback: () => void) {
+export function useClickOutside(ref: React.RefObject<HTMLElement | null>, callback: () => void) { //hook koji omogućuje pozivanje određene funkcije kada se klikne bilo gdje izvan određenog html elementa
   useEffect(() => {
     if(!ref) return;
     const handleClickOutside = (event: MouseEvent) => {

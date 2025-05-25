@@ -4,7 +4,7 @@ import { config } from "dotenv";
 config({ path: ".env" });
 
 export default defineConfig({
-  dialect: 'postgresql', // 'mysql' | 'sqlite' | 'turso'
+  dialect: 'postgresql', 
   schema: 'app/db/schema.ts',
   out: "app/db/migrations",
   dbCredentials: {

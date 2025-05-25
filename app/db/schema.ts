@@ -1,3 +1,5 @@
+//shema baze, sadrži sve tablice koje zahtjeva NextAuth, te tablicu favorita
+
 import {
   boolean,
   timestamp,

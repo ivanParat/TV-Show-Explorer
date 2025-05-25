@@ -9,9 +9,6 @@ import { Show } from "../types/types";
 import Grid from "./layout/Grid";
 
 export default function ShowList({initialShows, infiniteScroll, initialDate}: {initialShows: Show[], infiniteScroll: boolean, initialDate: string}) {
-
-  //ako infinite scroll nije potreban (nije potreban kod search), ovo je sve što treba
-
   const [shows, setShows] = useState<Show[]>(initialShows);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [currentDate, setCurrentDate] = useState<string>(initialDate);
@@ -23,14 +20,13 @@ export default function ShowList({initialShows, infiniteScroll, initialDate}: {i
     }
   }, [inView, currentDate]) //poziva se kada se dovoljno spustimo(inView), i ako smo već jednom učitali nove podatke, ali ih nije bilo dovoljno da ref nestane iz vidnog polja(currentDate)
 
-  //ako infinite scroll nije potreban (nije potreban kod search), ovo je sve što treba
-
   const filteredShows = selectedGenres.length === 0
   ? shows
   : shows.filter(show =>
       show.genres?.some((genre: string) => selectedGenres.includes(genre))
-    );
-
+    );//filtriranje serija - uzimaju se samo oni čiji je žanr odabran u izborniku za žanrove
+ 
+  //ako infinite scroll nije potreban (nije potreban kod search stranice), ovo je sve što treba u return-u
   if(!infiniteScroll){
     return(
       <main className="flex flex-col">
@@ -46,7 +42,7 @@ export default function ShowList({initialShows, infiniteScroll, initialDate}: {i
 
   //ako je potreban infinite scroll (potreban je kod home page), potrebno je i ovo ispod
 
-  const loadMoreShows = async () => {
+  const loadMoreShows = async () => { //učitavaju se serije prikazivane prethodnog dana
     const prevDate = new Date(currentDate);
     prevDate.setDate(prevDate.getDate() - 1);
     const previousDay = prevDate.toISOString().split("T")[0];
@@ -54,14 +50,14 @@ export default function ShowList({initialShows, infiniteScroll, initialDate}: {i
     const res = await fetch(`https://api.tvmaze.com/schedule/web?date=${previousDay}`, { next: { revalidate: 3600 } });
     const schedule = await res.json();
 
-    //we get shows from the schedule, and crucially - UNIQUE shows, we mustn't have duplicates
+    //izvlačenje jedinstvenih serija iz rasporeda
     const showsMap = new Map<number, Show>();
     schedule.forEach((entry: {_embedded: {show: Show}}) => {
       const show = entry._embedded.show;
-      showsMap.set(show.id, show); // If show.id already exists, it will be overwritten
+      showsMap.set(show.id, show); 
     });
 
-    // Add new unique shows to existing ones
+    // Dodavanje novih jedinstvenih serija postojećim - dodaju se samo one koje već nisu u listi serija
     setShows(prevShows => {
       const existingIds = new Set(prevShows.map(s => s.id));
       const newUniqueShows = Array.from(showsMap.values()).filter(s => !existingIds.has(s.id));
@@ -79,8 +75,8 @@ export default function ShowList({initialShows, infiniteScroll, initialDate}: {i
         {filteredShows.map((show: Show) => (
           <ShowCard key={show.id} show={show}/>
         ))}
-        <div ref={ref}>
-          Loading...
+        <div ref={ref} className="text-3xl font-bold"> {/*ako scrollamo do ovog div-a, poziva se useEffect koji učitava još serija*/}
+          ...
         </div>
       </Grid>
     </main>

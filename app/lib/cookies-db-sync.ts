@@ -5,7 +5,7 @@ import { eq, and, or } from "drizzle-orm";
 
 const types = ["shows", "episodes", "people"];
 
-export async function populateCookiesWithFavoritesFromDB(userId: string) {
+export async function populateCookiesWithFavoritesFromDB(userId: string) { //čita koji su korisnikovi favoriti iz baze podataka, te sprema favorite u cookies
   const dbFavorites = await db.query.favorites.findMany({
     where: (favs, { eq }) => eq(favs.userId, userId),
     columns: {
@@ -27,18 +27,18 @@ export async function populateCookiesWithFavoritesFromDB(userId: string) {
   }
 }
 
-export async function sendCookieDataToDB(userId: string) {
+export async function sendCookieDataToDB(userId: string) { //Stanje favorita iz cookieja sprema u bazu
   const allCookiesMap = new Map<string, Set<number>>(); 
   const allToInsert: { featureId: number; type: string }[] = [];
 
-  // 1. Build a complete map of cookie favorites by type
+  // 1. Dohvati sve cookieje sa favoritima
   for (const type of types) {
     const cookieFavorites = await getCookieFavorites(type);
     const cookieSet = new Set(cookieFavorites);
     allCookiesMap.set(type, cookieSet);
   }
 
-  // 2. Get all current DB favorites for this user (1 query)
+  // 2. Dohvati sve favorite iz baze
   const dbFavorites = await db.query.favorites.findMany({
     where: eq(favorites.userId, userId),
     columns: {
@@ -49,15 +49,15 @@ export async function sendCookieDataToDB(userId: string) {
 
   const toDelete: { featureId: number; type: string }[] = [];
 
-  // 3. Compare DB vs cookie
+  // 3. Usporedi favorite iz baze i cookieja, odluči što izbrisati iz baze
   for (const { featureId, type } of dbFavorites) {
     const cookieSet = allCookiesMap.get(type);
     if (!cookieSet?.has(featureId)) {
-      toDelete.push({ featureId, type }); // present in DB but not in cookie
+      toDelete.push({ featureId, type }); // Ako je favorit prisutan u bazi a ne u cookie-ju, znači da se treba izbrisati u bazi
     }
   }
 
-  // 4. Determine what to insert
+  // 4. Usporedi favorite iz baze i cookieja, odluči što ubaciti u bazu
   for (const [type, cookieSet] of allCookiesMap.entries()) {
     const dbSet = new Set(
       dbFavorites.filter(f => f.type === type).map(f => f.featureId)
@@ -65,12 +65,12 @@ export async function sendCookieDataToDB(userId: string) {
 
     for (const featureId of cookieSet) {
       if (!dbSet.has(featureId)) {
-        allToInsert.push({ featureId, type });
+        allToInsert.push({ featureId, type }); // Ako je favorit prisutan u cookiejima a ne u bazi, znači da se treba dodati u bazu
       }
     }
   }
 
-  // 5. Batch delete (if needed)
+  // 5. Brisanje iz baze
   if (toDelete.length > 0) {
     await db.delete(favorites).where(
       and(
@@ -84,7 +84,7 @@ export async function sendCookieDataToDB(userId: string) {
     );
   }
 
-  // 6. Batch insert (if needed)
+  // 6. Ubacivanje u bazu
   if (allToInsert.length > 0) {
     await db.insert(favorites).values(
       allToInsert.map(({ featureId, type }) => ({

@@ -1,3 +1,5 @@
+//stranica na kojoj se prikazuju osnovne informacije o glumcu i lista uloga u serijama
+
 import Image from "next/image";
 import Link from "next/link";
 import FavoriteButton from "@/app/components/FavoriteButton";

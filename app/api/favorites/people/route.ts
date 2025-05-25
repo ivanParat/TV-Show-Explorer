@@ -1,3 +1,5 @@
+//dohvaćanje favorita iz cookieja (GET), postavljanje favorita u cookieje (POST), brisanje favorita iz cookieja (DELETE)
+
 import { getFavorites, setFavorites } from "@/app/lib/cookies";
 
 const type = 'people';

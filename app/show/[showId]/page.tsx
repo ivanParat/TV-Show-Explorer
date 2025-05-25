@@ -1,3 +1,5 @@
+//stranica prikazuje osnovne informacije o seriji, te nudi linkove na stranicu s epizodama te serije, te stranicu s glumačkom postavom te serije
+
 import Image from "next/image";
 import Link from "next/link";
 import Star from "@/app/components/Star";
